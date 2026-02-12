@@ -1,5 +1,8 @@
 package hotspot.admin.auth.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,8 +14,6 @@ import hotspot.admin.auth.controller.response.TokenResponse;
 import hotspot.admin.auth.domain.Admin;
 import hotspot.admin.auth.service.port.AdminRepository;
 import hotspot.admin.common.jwt.JwtProvider;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class LoginServiceTest {
