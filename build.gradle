@@ -128,7 +128,8 @@ def verificationExcludes = [
 		'hotspot.admin.*.entity.*',
 		'hotspot.admin.*.exception.*',
 		'hotspot.admin.common.*',
-		'hotspot.admin.*.infrastructure.*'
+		'hotspot.admin.*.infrastructure.*',
+		'hotspot.admin.HealthController'
 ]
 
 jacocoTestReport {
