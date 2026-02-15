@@ -26,7 +26,7 @@ public class LoginServiceImpl implements LoginService {
             throw new ApplicationException(AuthErrorCode.LOGIN_FAILED);
         }
 
-        String accessToken = tokenProvider.createToken(adminCode);
+        String accessToken = tokenProvider.createToken();
 
         return new TokenResponse(accessToken);
     }

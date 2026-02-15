@@ -24,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class JwtProvider implements TokenProvider {
+    private static final String ADMIN_PRINCIPAL = "admin";
 
     @Value("${jwt.secret}")
     private String secret;
@@ -38,12 +39,12 @@ public class JwtProvider implements TokenProvider {
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String createToken(String adminCode) {
+    public String createToken() {
         Date now = new Date();
         Date validity = new Date(now.getTime() + expiration);
 
         return Jwts.builder()
-                .setSubject(adminCode)
+                .setSubject(ADMIN_PRINCIPAL)
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -69,7 +70,7 @@ public class JwtProvider implements TokenProvider {
         }
     }
 
-    public String getAdminCode(String token) {
+    public String getPrincipal(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()

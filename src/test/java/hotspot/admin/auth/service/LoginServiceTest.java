@@ -36,7 +36,7 @@ public class LoginServiceTest {
         String adminCode = "admin123";
         LoginRequest request = new LoginRequest(adminCode);
 
-        when(tokenProvider.createToken(adminCode))
+        when(tokenProvider.createToken())
                 .thenReturn("mock-token");
 
         // when

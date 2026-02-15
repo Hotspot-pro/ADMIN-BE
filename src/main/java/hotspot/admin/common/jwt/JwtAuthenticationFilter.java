@@ -36,9 +36,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = resolveToken(request);
 
             if (token != null && jwtProvider.validateToken(token)) {
-                String adminCode = jwtProvider.getAdminCode(token);
+                String principal = jwtProvider.getPrincipal(token);
                 Authentication authentication = new UsernamePasswordAuthenticationToken(
-                        adminCode,
+                        principal,
                         null,
                         Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"))
                 );
