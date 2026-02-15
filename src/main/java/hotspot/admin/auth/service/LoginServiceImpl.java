@@ -9,16 +9,19 @@ import hotspot.admin.auth.controller.response.TokenResponse;
 import hotspot.admin.auth.service.port.TokenProvider;
 import hotspot.admin.common.exception.ApplicationException;
 import hotspot.admin.common.exception.code.AuthErrorCode;
-import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class LoginServiceImpl implements LoginService {
 
     private final TokenProvider tokenProvider;
+    private final String adminCode;
 
-    @Value("${project.admin-code}")
-    private String adminCode;
+    public LoginServiceImpl(
+            TokenProvider tokenProvider,
+            @Value("${project.admin-code}") String adminCode) {
+        this.tokenProvider = tokenProvider;
+        this.adminCode = adminCode;
+    }
 
     @Override
     public TokenResponse login(LoginRequest request) {

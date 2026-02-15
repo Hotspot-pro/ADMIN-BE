@@ -6,10 +6,8 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import hotspot.admin.auth.controller.request.LoginRequest;
 import hotspot.admin.auth.controller.response.TokenResponse;
@@ -21,12 +19,11 @@ public class LoginServiceTest {
     @Mock
     private TokenProvider tokenProvider;
 
-    @InjectMocks
     private LoginServiceImpl loginService;
 
     @BeforeEach
     void setUp() {
-        ReflectionTestUtils.setField(loginService, "adminCode", "admin123");
+        loginService = new LoginServiceImpl(tokenProvider, "admin123");
     }
 
     @Test

@@ -4,8 +4,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
-import jakarta.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -26,16 +24,13 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtProvider implements TokenProvider {
     private static final String ADMIN_PRINCIPAL = "admin";
 
-    @Value("${jwt.secret}")
-    private String secret;
+    private final long expiration;
+    private final Key key;
 
-    @Value("${jwt.expiration}")
-    private long expiration;
-
-    private Key key;
-
-    @PostConstruct
-    public void init() {
+    public JwtProvider(
+            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.expiration}") long expiration) {
+        this.expiration = expiration;
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
