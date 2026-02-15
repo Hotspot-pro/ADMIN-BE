@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import hotspot.admin.auth.service.port.TokenProvider;
+import hotspot.admin.common.exception.ApplicationException;
+import hotspot.admin.common.exception.code.AuthErrorCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -36,12 +38,12 @@ public class JwtProvider implements TokenProvider {
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String createToken(String managerCode) {
+    public String createToken(String adminCode) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + expiration);
 
         return Jwts.builder()
-                .setSubject(managerCode)
+                .setSubject(adminCode)
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -54,17 +56,20 @@ public class JwtProvider implements TokenProvider {
             return true;
         } catch (SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT signature.");
+            throw new ApplicationException(AuthErrorCode.INVALID_TOKEN);
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT token.");
+            throw new ApplicationException(AuthErrorCode.EXPIRED_TOKEN);
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT token.");
+            throw new ApplicationException(AuthErrorCode.UNSUPPORTED_TOKEN);
         } catch (IllegalArgumentException e) {
             log.info("JWT token compact of handler are invalid.");
+            throw new ApplicationException(AuthErrorCode.EMPTY_TOKEN);
         }
-        return false;
     }
 
-    public String getManagerCode(String token) {
+    public String getAdminCode(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
